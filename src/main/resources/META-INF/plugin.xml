@@ -1,7 +1,7 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.yaroslavmayorov.parserplugin</id>
-    <name>parser-plugin</name>
+    <name>Simple parser</name>
     <vendor>yaroslavmayorov</vendor>
 
     <depends>com.intellij.modules.platform</depends>
@@ -9,6 +9,12 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
+        <fileType
+                name="Cobol File"
+                implementationClass="org.language.cobol.CobolFileType"
+                fieldName="INSTANCE"
+                language="Cobol"
+                extensions="cobol"/>
         <toolWindow factoryClass="com.github.yaroslavmayorov.parserplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
         <postStartupActivity implementation="com.github.yaroslavmayorov.parserplugin.startup.MyProjectActivity" />
     </extensions>
