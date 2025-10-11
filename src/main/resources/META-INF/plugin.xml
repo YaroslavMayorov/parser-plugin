@@ -15,7 +15,11 @@
                 fieldName="INSTANCE"
                 language="Cobol"
                 extensions="cobol"/>
-        <toolWindow factoryClass="com.github.yaroslavmayorov.parserplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.yaroslavmayorov.parserplugin.startup.MyProjectActivity" />
+        <lang.parserDefinition
+                language="Cobol"
+                implementationClass="org.language.cobol.CobolParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+                language="Cobol"
+                implementationClass="org.language.cobol.CobolSyntaxHighlighterFactory"/>
     </extensions>
 </idea-plugin>
