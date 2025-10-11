@@ -1,0 +1,46 @@
+{
+  parserClass="org.language.cobol.parser.CobolParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Cobol"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.language.cobol.psi"
+  psiImplPackage="org.language.cobol.psi.impl"
+
+  elementTypeHolderClass="org.language.cobol.psi.CobolTypes"
+  elementTypeClass="org.language.cobol.psi.CobolElementType"
+  tokenTypeClass="org.language.cobol.psi.CobolTokenType"
+}
+
+
+file ::= line*
+
+line ::= LINE_NUMBER statement
+
+LINE_NUMBER ::= NUMBER
+
+statement ::= identification_division DOT
+             | program_name DOT
+             | data_division DOT
+             | working_storage_section DOT
+             | data_item_decl DOT
+             | procedure_division DOT
+             | paragraph DOT
+             | perform_stmt
+             | stop_run DOT
+             | display_stmt DOT
+
+identification_division ::= IDENTIFICATION DIVISION
+program_name ::= PROGRAM-ID DOT IDENTIFIER
+data_division ::= DATA DIVISION
+working_storage_section ::= WORKING-STORAGE SECTION
+data_item_decl ::= NUMBER IDENTIFIER PIC pic_9n value_clause?
+pic_9n ::= NUMBER LPAREN NUMBER RPAREN
+value_clause ::= VALUE NUMBER
+procedure_division ::= PROCEDURE DIVISION
+paragraph ::= IDENTIFIER
+perform_stmt ::= PERFORM IDENTIFIER VARYING IDENTIFIER FROM NUMBER BY NUMBER UNTIL IDENTIFIER EQ NUMBER
+stop_run ::= STOP RUN
+display_stmt ::= DISPLAY display_operands
+display_operands ::= (STRING | IDENTIFIER)+
