@@ -66,18 +66,19 @@ Keep the grammar/lexer as small and focused as possible—only what’s needed.
 
 1) Clone & open
    ```bash
-   git clone 
-   cd 
+   git clone https://github.com/YaroslavMayorov/parser-plugin.git
+   cd parser-plugin
    ```
    
 2) Build
   ```bash
   ./gradlew build
   ```
+
 3) Run the sandbox IDE
-    ```bash
+   ```bash
   ./gradlew runIde
-  ```
+   ```
 
 This launches a separate IDE with your plugin installed.
 
