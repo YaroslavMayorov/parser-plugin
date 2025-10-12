@@ -2,6 +2,7 @@
 <idea-plugin>
     <id>com.github.yaroslavmayorov.parserplugin</id>
     <name>Simple parser</name>
+    <description>COBOL mini-plugin: highlighting and parsing of mini-syntax.</description>
     <vendor>yaroslavmayorov</vendor>
 
     <depends>com.intellij.modules.platform</depends>
