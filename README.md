@@ -1,52 +1,94 @@
-# parser-plugin
+# COBOL Mini Parser (IntelliJ Plugin)
 
-![Build](https://github.com/YaroslavMayorov/parser-plugin/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
+A minimal IntelliJ Platform plugin that lexes and parses a subset of COBOL sufficient to handle the assignment program below. It includes syntax highlighting, PSI tree generation, and a basic parser built from a .flex lexer and a .bnf grammar.
 
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Adjust the [pluginGroup](./gradle.properties) and [pluginName](./gradle.properties), as well as the [id](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains Marketplace.
-- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
-- [ ] Configure the [CODECOV_TOKEN](https://docs.codecov.com/docs/quick-start) secret for automated test coverage reports on PRs
+### Scope
 
-<!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
+```code
+01 IDENTIFICATION DIVISION.
+02 PROGRAM-ID. HELLO.
+03 DATA DIVISION.
+04 WORKING-STORAGE SECTION.
+05 01 WS-A PIC 9(2) VALUE 0.
+06 PROCEDURE DIVISION.
+07 A-PARA.
+08 PERFORM B-PARA VARYING WS-A FROM 2 BY 2 UNTIL WS-A=12
+09 STOP RUN.
+10 B-PARA.
+11 DISPLAY 'B-PARA ' WS-A.
+12 DISPLAY 'B-PARA'.
+```
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
+### Design goals
 
-To keep everything working, do not remove `<!-- ... -->` sections. 
-<!-- Plugin description end -->
+Parse this program exactly, and not fail on minor adjustments (line reordering, duplication of lines/paragraphs, trivial whitespace).
 
-## Installation
+Keep the grammar/lexer as small and focused as possible—only what’s needed.
 
-- Using the IDE built-in plugin system:
-  
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "parser-plugin"</kbd> >
-  <kbd>Install</kbd>
-  
-- Using JetBrains Marketplace:
+## Project Structure
 
-  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
+```bash
+.
+├── build.gradle.kts
+├── gradle.properties
+├── settings.gradle.kts
+├── src
+│   └── main
+│       ├── java / kotlin
+│       │   └── org/language/cobol/...
+│       │       ├── CobolLanguage.kt / .java
+│       │       ├── CobolFileType.kt / .java
+│       │       ├── CobolLexerAdapter.kt
+│       │       ├── CobolParserDefinition.kt
+│       │       ├── CobolSyntaxHighlighter.kt
+│       │       └── (color settings page, icons, etc. optional)
+│       ├── gen/                       # GENERATED: lexer & parser (don’t edit)
+│       ├── resources
+│       │   ├── META-INF/plugin.xml    # plugin declaration
+│       │   └── filetype icons, color demo text, etc.
+│       └── grammar
+│           ├── CobolLexer.flex        # JFlex spec
+│           └── Cobol.bnf              # Grammar-Kit BNF
+└── README.md
+```
 
-  You can also download the [latest release](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID/versions) from JetBrains Marketplace and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+## Requirements
 
-- Manually:
+- JDK 17 (recommended for current Gradle + IntelliJ Platform)
 
-  Download the [latest release](https://github.com/YaroslavMayorov/parser-plugin/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+- IntelliJ IDEA Community or Ultimate (2023.3+ recommended)
 
+- Gradle
 
----
-Plugin based on the [IntelliJ Platform Plugin Template][template].
+- Grammar-Kit and JFlex support in IDE (for regenerating parser/lexer)
 
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
-[docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
+## Usage
+
+1) Clone & open
+   ```bash
+   git clone 
+   cd 
+   ```
+   
+2) Build
+  ```bash
+  ./gradlew build
+  ```
+3) Run the sandbox IDE
+    ```bash
+  ./gradlew runIde
+  ```
+
+This launches a separate IDE with your plugin installed.
+
+4) Try it
+
+- In the sandbox IDE, create a file hello.cobol.
+
+- Paste the sample program.
+
+- Install PSI Viewer to sandbox IDE.
+
+- Open PSI Viewer in tools (right sidebar) to inspect tokens/PSI
+
+- Check highlighting and that the file parses (no red error waves for the supported constructs).
