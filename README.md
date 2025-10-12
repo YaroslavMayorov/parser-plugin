@@ -55,11 +55,8 @@ Keep the grammar/lexer as small and focused as possible—only what’s needed.
 ## Requirements
 
 - JDK 17 (recommended for current Gradle + IntelliJ Platform)
-
 - IntelliJ IDEA Community or Ultimate (2023.3+ recommended)
-
 - Gradle
-
 - Grammar-Kit and JFlex support in IDE (for regenerating parser/lexer)
 
 ## Usage
@@ -71,13 +68,13 @@ Keep the grammar/lexer as small and focused as possible—only what’s needed.
    ```
    
 2) Build
-  ```bash
-  ./gradlew build
-  ```
+   ```bash
+   ./gradlew build
+   ```
 
 3) Run the sandbox IDE
    ```bash
-  ./gradlew runIde
+   ./gradlew runIde
    ```
 
 This launches a separate IDE with your plugin installed.
@@ -85,11 +82,7 @@ This launches a separate IDE with your plugin installed.
 4) Try it
 
 - In the sandbox IDE, create a file hello.cobol.
-
 - Paste the sample program.
-
 - Install PSI Viewer to sandbox IDE.
-
 - Open PSI Viewer in tools (right sidebar) to inspect tokens/PSI
-
 - Check highlighting and that the file parses (no red error waves for the supported constructs).
